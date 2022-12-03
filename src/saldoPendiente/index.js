@@ -13,18 +13,18 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { grey } from "@mui/material/colors";
 
-function createData(name, mon, tue, wed, thu) {
-  return { name, mon, tue, wed, thu};
+function createData(name, mon, tue, wed, thu, fri) {
+  return { name, mon, tue, wed, thu, fri};
 }
 
 const rows = [
-  createData("El Señor de Los Anillos", "J.R.R. Tolkien", "1954", "", ""),
-  createData("B", "", "", "", "",),
-  createData("C", "", "X", "", ""),
-  createData("C2", "", "", "", ""),
-  createData("D", "", "", "X", ""),
-  createData("E", "", "", "X", ""),
-  createData("F", "", "", "", ""),
+  createData("ha", "", "", ""),
+  createData("he", "", "", ""),
+  createData("hi", "", "", ""),
+  createData("ho", "", "", ""),
+  createData("hu", "", "", ""),
+  createData("haha", "", "", ""),
+  createData("hahe", "", "", ""),
 ];
 
 const formatter = new Intl.NumberFormat("es-CL", {
@@ -34,7 +34,7 @@ const formatter = new Intl.NumberFormat("es-CL", {
 
 const fecha = new Date();
 
-export default function ReservasLibros() {
+export default function SaldosPendientes() {
   return (
     <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100vh" }}>
       {/* seccion salas y saldos */}
@@ -49,7 +49,7 @@ export default function ReservasLibros() {
               color="#2196f3"
               gutterBottom
             >
-              Libros
+              Saldos Pendientes
             </Typography>
             {/* tabla */}
             <TableContainer component={Paper}>
@@ -67,13 +67,10 @@ export default function ReservasLibros() {
                       <Typography fontWeight="bold">Autor</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Año</Typography>
+                      <Typography fontWeight="bold">Entrega</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Ubicación</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography fontWeight="bold">ISBN</Typography>
+                      <Typography fontWeight="bold">Saldo</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -89,18 +86,11 @@ export default function ReservasLibros() {
                       <TableCell align="center">{row.mon}</TableCell>
                       <TableCell align="center">{row.tue}</TableCell>
                       <TableCell align="center">{row.wed}</TableCell>
-                      <TableCell align="center">{row.thu}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* boton ver mas */}
-            <Button variant="text" sx={{ marginTop: 2 }}>
-              <Typography fontSize="12px" color="#2196f3">
-                Búsqueda personalizada
-              </Typography>
-            </Button>
           </Card>
         </Grid>
       </Grid>
