@@ -10,7 +10,7 @@ import ReservasSalas from "./pages/reservaSalas";
 import Resumen from "./pages/resumen";
 import SaldosPendientes from "./pages/saldoPendiente";
 
-const isAuthenticated = false;
+const isAuthenticated = true;
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
             <Route path="/saldos-pendientes" element={<SaldosPendientes />} />
             <Route path="/historial" element={<Historial />} />
             <Route path="/perfil" element={<Perfil />} />
-            <Route path="/resumen" element={<Resumen />} />
+            <Route path="/*" element={<Resumen />} />
           </Routes>
         </BrowserRouter>
       ) : (

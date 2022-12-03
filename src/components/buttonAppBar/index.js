@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -17,8 +19,28 @@ import Person2Icon from "@mui/icons-material/Person2";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ChairIcon from "@mui/icons-material/Chair";
+import { Logout, Money } from "@mui/icons-material";
+
+const routes = {
+  "/reservas-libros": "Reservas de libros",
+  "/reservas-salas": "Reservas de salas",
+  "/saldos-pendientes": "Saldos pendientes",
+  "/resumen": "Resumen",
+  "/historial": "Historial",
+  "/perfil": "Mi perfil",
+};
 
 export default function ButtonAppBar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const routeKeys = Object.keys(routes);
+    if (!routeKeys.includes(location.pathname)) {
+      navigate("/resumen");
+    }
+  }, [location, navigate]);
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = () => {
@@ -28,11 +50,16 @@ export default function ButtonAppBar() {
   };
 
   const listOptions = [
-    { option: "Resumen", icon: <DashboardIcon /> },
-    { option: "Mi perfil", icon: <Person2Icon /> },
-    { option: "Reservas", icon: <BookmarkIcon /> },
-    { option: "Estanterias", icon: <MenuBookIcon /> },
-    { option: "Salas", icon: <ChairIcon /> },
+    { option: "Resumen", icon: <DashboardIcon />, path: "/resumen" },
+    { option: "Mi perfil", icon: <Person2Icon />, path: "/perfil" },
+    { option: "Reservas", icon: <BookmarkIcon />, path: "/historial" },
+    { option: "Estanterias", icon: <MenuBookIcon />, path: "/reservas-libros" },
+    { option: "Salas", icon: <ChairIcon />, path: "/reservas-salas" },
+    {
+      option: "Saldos pendientes",
+      icon: <Money />,
+      path: "/saldos-pendientes",
+    },
   ];
 
   return (
@@ -50,16 +77,24 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            {routes[location.pathname] ?? location.pathname}
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">
+            <Logout sx={{ marginRight: 1 }} />
+            Salir
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
         <List>
           {listOptions.map((curr, index) => (
             <ListItem key={curr} disablePadding>
-              <ListItemButton>
+              <ListItemButton
+                onClick={() => {
+                  navigate(curr.path);
+                  setDrawerOpen(false);
+                }}
+              >
                 <ListItemIcon>{curr.icon}</ListItemIcon>
                 <ListItemText primary={curr.option} />
               </ListItemButton>
