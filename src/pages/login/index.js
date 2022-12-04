@@ -5,7 +5,30 @@ import { blue, grey, purple } from "@mui/material/colors";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
 import { Lock } from "@mui/icons-material";
 
+import {useState} from "react"
+
+
 export const Login = () => {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  
+  const handleSubmit = async () => {
+    const response = await fetch(
+      "http://localhost:8080/api/user-login",
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, password: password})
+      }
+    ).then((res)=> res.text())
+    .then((text)=>{
+      console.log(text)
+    })
+  }
   return (
     <Grid
       container
@@ -48,6 +71,7 @@ export const Login = () => {
           type="email"
           variant="outlined"
           required
+          onChange={(e)=> setEmail(e.target.value)}
           sx={{
             width: "100%",
           }}
@@ -57,12 +81,13 @@ export const Login = () => {
           variant="outlined"
           type="password"
           required
+          onChange={(e)=> setPassword(e.target.value)}
           sx={{
             width: "100%",
             marginTop: 2,
           }}
         />
-        <Button variant="contained" sx={{ width: "100%", marginTop: 4 }}>
+        <Button onClick={()=> handleSubmit()} variant="contained" sx={{ width: "100%", marginTop: 4 }}>
           Ingresar
         </Button>
       </Grid>
