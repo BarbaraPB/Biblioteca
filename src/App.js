@@ -1,6 +1,9 @@
 import { Box } from "@mui/system";
+import { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useUsuario } from "./api/useUsuario";
 import ButtonAppBar from "./components/buttonAppBar";
+import { AuthContext } from "./context/AuthContext";
 import Historial from "./historial";
 
 import { Login } from "./pages/login";
@@ -10,9 +13,10 @@ import ReservasSalas from "./pages/reservaSalas";
 import Resumen from "./pages/resumen";
 import SaldosPendientes from "./pages/saldoPendiente";
 
-const isAuthenticated = true;
-
 function App() {
+  const { user } = useContext(AuthContext);
+  const isAuthenticated = !!user;
+
   return (
     <Box sx={{ height: "100vh", width: "100vw" }}>
       {isAuthenticated ? (

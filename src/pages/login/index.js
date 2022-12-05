@@ -1,34 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Log from "../../img/log.jpg";
-import { blue, grey, purple } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
 import { Lock } from "@mui/icons-material";
-
-import {useState} from "react"
-
+import { useUsuario } from "../../api/useUsuario";
 
 export const Login = () => {
+  const { getUsuario } = useUsuario();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  
-  const handleSubmit = async () => {
-    const response = await fetch(
-      "http://localhost:8080/api/user-login",
-      {
-        method: 'POST',
-        mode: 'cors',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email: email, password: password})
-      }
-    ).then((res)=> res.text())
-    .then((text)=>{
-      console.log(text)
-    })
+  async function inicioSesion(event) {
+    event.preventDefault();
+    await getUsuario(email, password);
   }
+
   return (
     <Grid
       container
@@ -71,7 +58,7 @@ export const Login = () => {
           type="email"
           variant="outlined"
           required
-          onChange={(e)=> setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           sx={{
             width: "100%",
           }}
@@ -81,13 +68,17 @@ export const Login = () => {
           variant="outlined"
           type="password"
           required
-          onChange={(e)=> setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           sx={{
             width: "100%",
             marginTop: 2,
           }}
         />
-        <Button onClick={()=> handleSubmit()} variant="contained" sx={{ width: "100%", marginTop: 4 }}>
+        <Button
+          onClick={inicioSesion}
+          variant="contained"
+          sx={{ width: "100%", marginTop: 4 }}
+        >
           Ingresar
         </Button>
       </Grid>
