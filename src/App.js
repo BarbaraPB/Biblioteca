@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ButtonAppBar from "./components/buttonAppBar";
 import { AuthContext } from "./context/AuthContext";
-import Historial from "./historial";
+import Historial from "./pages/historial";
 import ListaSalas from "./pages/listaSalas/ListaSalas";
 
 import { Login } from "./pages/login";

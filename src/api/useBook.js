@@ -37,6 +37,17 @@ export function useBook() {
       },
       body: JSON.stringify({ book: bookId }),
     }).then((response) => response.json());
+  }
+
+  async function recordBooks() {
+    const response = await fetch(`${ROOT_URL}/api/get-user-record`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${usuario?.authToken}`,
+      },
+    }).then((response) => response.json());
     console.log(response);
   }
 
@@ -44,5 +55,6 @@ export function useBook() {
     getAllBooks,
     // checkBook,
     reserveBook,
+    recordBooks,
   };
 }

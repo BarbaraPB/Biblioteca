@@ -20,6 +20,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ChairIcon from "@mui/icons-material/Chair";
 import { Logout, Money } from "@mui/icons-material";
+import { useUsuario } from "../../api/useUsuario";
 
 const routes = {
   "/reservas-libros": "Reservas de libros",
@@ -33,6 +34,11 @@ const routes = {
 export default function ButtonAppBar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { setUsuario } = useUsuario();
+
+  async function logOut() {
+    setUsuario(null);
+  }
 
   React.useEffect(() => {
     const routeKeys = Object.keys(routes);
@@ -79,7 +85,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {routes[location.pathname] ?? location.pathname}
           </Typography>
-          <Button color="inherit">
+          <Button onClick={logOut} color="inherit">
             <Logout sx={{ marginRight: 1 }} />
             Salir
           </Button>

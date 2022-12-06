@@ -5,7 +5,7 @@ const ROOT_URL = "http://localhost:8080";
 
 export function useUsuario() {
   const { user, setUser } = useContext(AuthContext);
-  const isAuthenticated = false;
+  const isAuthenticated = !!user;
 
   // obtener usuario
   async function getUsuario(email, password) {
@@ -26,10 +26,29 @@ export function useUsuario() {
     setUser(response.user);
   }
 
+  async function actUsuario() {
+    console.log();
+    const response = await fetch(`${ROOT_URL}/api/get-user`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      Authorization: `Bearer ${user?.authToken}`,
+    }).then((response) => response.json());
+
+    if (!response.ok) {
+      alert("Usuario no autorizado.");
+      return;
+    }
+    setUser(response.user);
+  }
+
   return {
     usuario: user ?? {},
     isAuthenticated,
     setUsuario: setUser,
     getUsuario,
+    actUsuario,
   };
 }

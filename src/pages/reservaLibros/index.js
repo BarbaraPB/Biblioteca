@@ -13,10 +13,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { green, grey } from "@mui/material/colors";
 import { useBook } from "../../api/useBook";
+import { useUsuario } from "../../api/useUsuario";
 
 export default function ReservasLibros() {
   const { getAllBooks, reserveBook } = useBook();
   const [books, setBooks] = useState([]);
+  const { usuario, actUsuario } = useUsuario();
 
   async function fetchBooks() {
     setBooks(await getAllBooks());
@@ -27,8 +29,11 @@ export default function ReservasLibros() {
   }, []);
 
   async function onReserveBook(bookId) {
-    await reserveBook(bookId);
-    fetchBooks();
+    actUsuario();
+    if (usuario.status === "available") {
+      await reserveBook(bookId);
+      fetchBooks();
+    }
   }
 
   return (
