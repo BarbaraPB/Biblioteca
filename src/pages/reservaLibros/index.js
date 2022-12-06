@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,37 +11,35 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { grey } from "@mui/material/colors";
-
-function createData(name, mon, tue, wed, thu) {
-  return { name, mon, tue, wed, thu};
-}
-
-const rows = [
-  createData("El Señor de Los Anillos", "J.R.R. Tolkien", "1954", "", ""),
-  createData("B", "", "", "", "",),
-  createData("C", "", "X", "", ""),
-  createData("C2", "", "", "", ""),
-  createData("D", "", "", "X", ""),
-  createData("E", "", "", "X", ""),
-  createData("F", "", "", "", ""),
-];
-
-const formatter = new Intl.NumberFormat("es-CL", {
-  currency: "CLP",
-  style: "currency",
-});
-
-const fecha = new Date();
+import { green, grey } from "@mui/material/colors";
+import { useBook } from "../../api/useBook";
 
 export default function ReservasLibros() {
+  const { getAllBooks, reserveBook } = useBook();
+  const [books, setBooks] = useState([]);
+
+  async function fetchBooks() {
+    setBooks(await getAllBooks());
+  }
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  async function onReserveBook(bookId) {
+    await reserveBook(bookId);
+    fetchBooks();
+  }
+
   return (
     <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100vh" }}>
       {/* seccion salas y saldos */}
       <Grid container direction="row" spacing={4}>
         {/* tarjeta de libros recientes */}
         <Grid item xs={12}>
-          <Card sx={{ padding: 4, borderLeft: 'var(--Grid-borderWidth) solid' }}>
+          <Card
+            sx={{ padding: 4, borderLeft: "var(--Grid-borderWidth) solid" }}
+          >
             {/* titulo */}
             <Typography
               variant="h6"
@@ -60,8 +58,16 @@ export default function ReservasLibros() {
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" sx= {{borderRight: 'var(--Grid-borderWidth) solid' }}>
-                      <Typography fontWeight="bold" sx= {{borderRight: 'var(--Grid-borderWidth) solid' }}>Título</Typography>
+                    <TableCell
+                      align="center"
+                      sx={{ borderRight: "var(--Grid-borderWidth) solid" }}
+                    >
+                      <Typography
+                        fontWeight="bold"
+                        sx={{ borderRight: "var(--Grid-borderWidth) solid" }}
+                      >
+                        Título
+                      </Typography>
                     </TableCell>
                     <TableCell align="center">
                       <Typography fontWeight="bold">Autor</Typography>
@@ -75,32 +81,41 @@ export default function ReservasLibros() {
                     <TableCell align="center">
                       <Typography fontWeight="bold">ISBN</Typography>
                     </TableCell>
+                    <TableCell align="center">
+                      <Typography fontWeight="bold">Reservar</Typography>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {books.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.nombre}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="center" component="th" scope="row">
-                        {row.name}
+                        {row.title}
                       </TableCell>
-                      <TableCell align="center">{row.mon}</TableCell>
-                      <TableCell align="center">{row.tue}</TableCell>
-                      <TableCell align="center">{row.wed}</TableCell>
-                      <TableCell align="center">{row.thu}</TableCell>
+                      <TableCell align="center">{row.author}</TableCell>
+                      <TableCell align="center">{row.year}</TableCell>
+                      <TableCell align="center">{row.localId}</TableCell>
+                      <TableCell align="center">{row.isbn}</TableCell>
+                      <TableCell align="center">
+                        <Button
+                          onClick={() => onReserveBook(row._id)}
+                          sx={{
+                            backgroundColor: green[300],
+                            color: "white",
+                            "&:hover": { backgroundColor: green[600] },
+                          }}
+                        >
+                          Reservar
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* boton ver mas */}
-            <Button variant="text" sx={{ marginTop: 2 }}>
-              <Typography fontSize="12px" color="#2196f3">
-                Búsqueda personalizada
-              </Typography>
-            </Button>
           </Card>
         </Grid>
       </Grid>
