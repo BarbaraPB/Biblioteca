@@ -37,7 +37,7 @@ export default function ReservasLibros() {
   }
 
   return (
-    <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100vh" }}>
+    <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100%" }}>
       {/* seccion salas y saldos */}
       <Grid container direction="row" spacing={4}>
         {/* tarjeta de libros recientes */}
@@ -98,12 +98,20 @@ export default function ReservasLibros() {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="center" component="th" scope="row">
-                        {row.title}
+                        {row.title.toUpperCase()}
                       </TableCell>
-                      <TableCell align="center">{row.author}</TableCell>
-                      <TableCell align="center">{row.year}</TableCell>
-                      <TableCell align="center">{row.localId}</TableCell>
-                      <TableCell align="center">{row.isbn}</TableCell>
+                      <TableCell align="center">
+                        {row.author.toUpperCase()}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.year.toUpperCase()}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.localId.toUpperCase()}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.isbn.toUpperCase()}
+                      </TableCell>
                       <TableCell align="center">
                         <Button
                           onClick={() => onReserveBook(row._id)}

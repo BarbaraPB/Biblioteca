@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,6 +12,8 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { grey } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+import { useUsuario } from "../../api/useUsuario";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -33,6 +35,14 @@ const formatter = new Intl.NumberFormat("es-CL", {
 const fecha = new Date();
 
 export default function Resumen() {
+  const navigate = useNavigate();
+  const { usuario, refreshUsuario } = useUsuario();
+
+  useEffect(() => {
+    console.log(usuario.authToken);
+    refreshUsuario();
+  }, []);
+
   return (
     <Box sx={{ backgroundColor: grey[200], padding: 4 }}>
       {/* seccion salas y saldos */}
@@ -121,7 +131,7 @@ export default function Resumen() {
               </Typography>
               {/* monto saldo */}
               <Typography variant="h4" sx={{ marginTop: 4 }}>
-                {formatter.format(10000)}
+                {formatter.format(usuario.debt)}
               </Typography>
               {/* fecha mas antigua */}
               <Typography
@@ -137,7 +147,11 @@ export default function Resumen() {
             </Box>
             {/* boton ver detalles */}
             <Button variant="text">
-              <Typography fontSize="12px" color="#2196f3">
+              <Typography
+                onClick={() => navigate("/saldos-pendientes")}
+                fontSize="12px"
+                color="#2196f3"
+              >
                 Ver detalles
               </Typography>
             </Button>

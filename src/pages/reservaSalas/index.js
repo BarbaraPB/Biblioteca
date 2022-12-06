@@ -18,7 +18,7 @@ export default function ReservasSalas() {
     //debe recibir la sala elegida en componente anterior
   }
   return (
-    <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100vh" }}>
+    <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100%" }}>
       {/* seccion salas y saldos */}
       <Grid container direction="row" spacing={4}>
         {/* tarjeta de libros recientes */}

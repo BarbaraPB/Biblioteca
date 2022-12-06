@@ -11,7 +11,7 @@ import Perfil from "./pages/perfil";
 import ReservasLibros from "./pages/reservaLibros";
 import ReservasSalas from "./pages/reservaSalas";
 import Resumen from "./pages/resumen";
-import SaldosPendientes from "./pages/saldoPendiente";
+import SaldosPendientes from "./pages/saldosPendientes";
 
 function App() {
   const { user } = useContext(AuthContext);

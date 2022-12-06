@@ -12,16 +12,10 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { useBook } from "../../api/useBook";
-
-const formatter = new Intl.NumberFormat("es-CL", {
-  currency: "CLP",
-  style: "currency",
-});
-
-const fecha = new Date();
+import { formatFecha } from "../../utils/date";
 
 export default function Historial() {
-  const {recordBooks} = useBook();
+  const { recordBooks } = useBook();
   const [books, setBooks] = useState([]);
 
   async function fetchBooks() {
@@ -33,12 +27,12 @@ export default function Historial() {
   }, []);
 
   return (
-    <Box sx={{ backgroundColor: grey[200], padding: 4 }}>
+    <Box sx={{ backgroundColor: grey[200], height: "100%", padding: 4 }}>
       {/* seccion salas y saldos */}
       <Grid>
         {/* tarjeta de libros recientes */}
         <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-          <Card sx={{ padding: 2 }}>
+          <Card sx={{ padding: 2, paddingBottom: 3 }}>
             {/* titulo */}
             <Typography
               variant="h6"
@@ -46,7 +40,7 @@ export default function Historial() {
               color="#2196f3"
               gutterBottom
             >
-              Historial Libros
+              Libros reservados
             </Typography>
             {/* tabla */}
             <TableContainer component={Paper}>
@@ -64,23 +58,113 @@ export default function Historial() {
                       <Typography fontWeight="bold">Autor</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography fontWeight="bold">Estado</Typography>
+                      <Typography fontWeight="bold">Año</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">ISBN</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {books.map((book) => (
-                    <TableRow
-                      key={book.title}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {book.bookId.title.toUpperCase()}
-                      </TableCell>
-                      <TableCell align="right">{book.bookId.author.toUpperCase()}</TableCell>
-                      <TableCell align="right">{book.bookId.status.toUpperCase()}</TableCell>
-                    </TableRow>
-                  ))}
+                  {books.map((book) =>
+                    book.status === "open" ? (
+                      <TableRow
+                        key={book.title}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {book.bookId.title.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">
+                          {book.bookId.author.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">
+                          {book.bookId.year.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">
+                          {book.bookId.isbn.toUpperCase()}
+                        </TableCell>
+                      </TableRow>
+                    ) : null
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Grid>
+        {/* tarjeta de libros historicos */}
+        <Grid item xs={12} sx={{ paddingBottom: 4 }}>
+          <Card sx={{ padding: 2, paddingBottom: 3 }}>
+            {/* titulo */}
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              color="#2196f3"
+              gutterBottom
+            >
+              Libros históricos
+            </Typography>
+            {/* tabla */}
+            <TableContainer component={Paper}>
+              <Table
+                sx={{ minWidth: 650 }}
+                size="small"
+                aria-label="a dense table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography fontWeight="bold">Título</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">Autor</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">Año</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">ISBN</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">Fecha de inicio</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography fontWeight="bold">
+                        Fecha de expiración
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {books.map((book) =>
+                    book.status === "closed" ? (
+                      <TableRow
+                        key={book.title}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {book.bookId.title.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">
+                          {book.bookId.author.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">
+                          {book.bookId.year.toUpperCase()}
+                        </TableCell>
+                        <TableCell align="right">{book.bookId.isbn}</TableCell>
+                        <TableCell align="right">
+                          {formatFecha(book.createdAt)}
+                        </TableCell>
+                        <TableCell align="right">
+                          {formatFecha(book.expiresAt)}
+                        </TableCell>
+                      </TableRow>
+                    ) : null
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
