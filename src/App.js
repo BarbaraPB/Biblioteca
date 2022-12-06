@@ -1,10 +1,10 @@
 import { Box } from "@mui/system";
 import { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useUsuario } from "./api/useUsuario";
 import ButtonAppBar from "./components/buttonAppBar";
 import { AuthContext } from "./context/AuthContext";
 import Historial from "./historial";
+import ListaSalas from "./pages/listaSalas/ListaSalas";
 
 import { Login } from "./pages/login";
 import Perfil from "./pages/perfil";
@@ -25,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/reservas-libros" element={<ReservasLibros />} />
             <Route path="/reservas-salas" element={<ReservasSalas />} />
+            <Route path="/lista-salas" element={<ListaSalas />} />
             <Route path="/saldos-pendientes" element={<SaldosPendientes />} />
             <Route path="/historial" element={<Historial />} />
             <Route path="/perfil" element={<Perfil />} />

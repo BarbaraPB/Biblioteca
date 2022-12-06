@@ -23,7 +23,7 @@ import { Logout, Money } from "@mui/icons-material";
 
 const routes = {
   "/reservas-libros": "Reservas de libros",
-  "/reservas-salas": "Reservas de salas",
+  "/lista-salas": "Reservas de salas",
   "/saldos-pendientes": "Saldos pendientes",
   "/resumen": "Resumen",
   "/historial": "Historial",
@@ -54,7 +54,7 @@ export default function ButtonAppBar() {
     { option: "Mi perfil", icon: <Person2Icon />, path: "/perfil" },
     { option: "Reservas", icon: <BookmarkIcon />, path: "/historial" },
     { option: "Estanterias", icon: <MenuBookIcon />, path: "/reservas-libros" },
-    { option: "Salas", icon: <ChairIcon />, path: "/reservas-salas" },
+    { option: "Salas", icon: <ChairIcon />, path: "/lista-salas" },
     {
       option: "Saldos pendientes",
       icon: <Money />,

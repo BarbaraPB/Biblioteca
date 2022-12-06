@@ -28,13 +28,14 @@ export function useBook() {
   // }
 
   async function reserveBook(bookId) {
-    const response = await fetch(`${ROOT_URL}/api/execute`, {
+    const response = await fetch(`${ROOT_URL}/api/generate-unique-book-rent`, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${usuario?.authToken}`,
       },
-      body: JSON.stringify({ userId: usuario._id, queue: [bookId] }),
+      body: JSON.stringify({ book: bookId }),
     }).then((response) => response.json());
     console.log(response);
   }

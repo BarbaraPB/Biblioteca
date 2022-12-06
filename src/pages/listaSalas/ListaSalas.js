@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,12 +11,26 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { grey } from "@mui/material/colors";
+import { green, grey } from "@mui/material/colors";
+import { useRoom } from "../../api/useRoom";
 
-export default function ReservasSalas() {
-  async function onReserveRoom(bloque) {
-    //debe recibir la sala elegida en componente anterior
+export default function ListaSalas() {
+  const { getAllRooms, reserveRoom } = useRoom();
+  const [rooms, setRooms] = useState([]);
+
+  async function fetchRooms() {
+    setRooms(await getAllRooms());
   }
+
+  useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  async function onReserveRoom(roomId) {
+    await reserveRoom(roomId);
+    fetchRooms();
+  }
+
   return (
     <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100vh" }}>
       {/* seccion salas y saldos */}
@@ -27,14 +41,13 @@ export default function ReservasSalas() {
             sx={{ padding: 4, borderLeft: "var(--Grid-borderWidth) solid" }}
           >
             {/* titulo */}
-            {/* nombre sala enviada */}
             <Typography
               variant="h6"
               fontWeight="bold"
               color="#2196f3"
               gutterBottom
             >
-              Sala B-22
+              Libros
             </Typography>
             {/* tabla */}
             <TableContainer component={Paper}>
@@ -53,63 +66,56 @@ export default function ReservasSalas() {
                         fontWeight="bold"
                         sx={{ borderRight: "var(--Grid-borderWidth) solid" }}
                       >
-                        Bloque
+                        Título
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Lunes</Typography>
+                      <Typography fontWeight="bold">Autor</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Martes</Typography>
+                      <Typography fontWeight="bold">Año</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Miércoles</Typography>
+                      <Typography fontWeight="bold">Ubicación</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Jueves</Typography>
+                      <Typography fontWeight="bold">ISBN</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography fontWeight="bold">Viernes</Typography>
+                      <Typography fontWeight="bold">Reservar</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                {/* <TableBody>
-                  {rows.map((row) => (
+                <TableBody>
+                  {rooms.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.nombre}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <Button
-                          onClick={() => onReserveRoom("A")}
-                          sx={{
-                            backgroundColor: grey[300],
-                            color: "white",
-                            "&:hover": { backgroundColor: grey[600] },
-                          }}
-                        >
-                          A
-                        </Button>
+                      <TableCell align="center" component="th" scope="row">
+                        {row.title}
+                      </TableCell>
+                      <TableCell align="center">{row.author}</TableCell>
+                      <TableCell align="center">{row.year}</TableCell>
+                      <TableCell align="center">{row.localId}</TableCell>
+                      <TableCell align="center">{row.isbn}</TableCell>
+                      <TableCell align="center">
                         <Button
-                          onClick={() => onReserveRoom("A")}
+                          onClick={() => onReserveRoom(row._id)} //redirigir a componente reserva sala con horario del id sala
                           sx={{
-                            backgroundColor: grey[300],
+                            backgroundColor: green[300],
                             color: "white",
-                            "&:hover": { backgroundColor: grey[600] },
+                            "&:hover": { backgroundColor: green[600] },
                           }}
                         >
-                          B
+                          Reservar
                         </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
-                </TableBody> */}
+                </TableBody>
               </Table>
             </TableContainer>
-            {/* boton ver mas */}
-            <Button variant="text" sx={{ marginTop: 2 }}>
-              <Typography fontSize="12px" color="#2196f3">
-                Ver más salas
-              </Typography>
-            </Button>
           </Card>
         </Grid>
       </Grid>
