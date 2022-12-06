@@ -21,7 +21,6 @@ const formatter = new Intl.NumberFormat("es-CL", {
   style: "currency",
 });
 
-const fecha = new Date();
 
 export default function Resumen() {
   const navigate = useNavigate();
@@ -29,8 +28,8 @@ export default function Resumen() {
   const { recordBooks } = useBook();
   const [books, setBooks] = useState([]);
 
+
   useEffect(() => {
-    console.log(usuario.authToken);
     refreshUsuario();
     fetchBooks();
   }, []);
@@ -45,7 +44,7 @@ export default function Resumen() {
       <Grid container direction="row" spacing={4}>
         {/* tarjeta de salas de estudio recientes */}
         <Grid item xs={9}>
-          <Card sx={{ padding: 2, height: 290 }}>
+          <Card sx={{ padding: 2, height: 600 }}>
             {/* titulo */}
             <Typography
               variant="h6"
@@ -85,9 +84,9 @@ export default function Resumen() {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {book.bookId.title}
+                        {book.bookId.title.toUpperCase()}
                       </TableCell>
-                      <TableCell align="right">{book.bookId.author}</TableCell>
+                      <TableCell align="right">{book.bookId.author.toUpperCase()}</TableCell>
                       <TableCell align="right">{book.bookId.year}</TableCell>
                       <TableCell align="right">{book.bookId.isbn}</TableCell>
                     </TableRow>
@@ -139,10 +138,9 @@ export default function Resumen() {
                 color={grey[500]}
                 sx={{ marginTop: 2 }}
               >
-                Mas antiguo:
               </Typography>
               <Typography variant="subtitle1" color={grey[500]}>
-                {fecha.toLocaleDateString()}
+                Total acumulado
               </Typography>
             </Box>
             {/* boton ver detalles */}

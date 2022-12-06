@@ -67,7 +67,7 @@ export default function Historial() {
                 </TableHead>
                 <TableBody>
                   {books.map((book) =>
-                    book.status === "open" ? (
+                    book.status != "closed" ? (
                       <TableRow
                         key={book.title}
                         sx={{

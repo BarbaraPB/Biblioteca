@@ -83,7 +83,7 @@ export default function SaldosPendientes() {
                 </TableHead>
                 <TableBody>
                   {books.map((book) =>
-                    book.status === "closed" ? (
+                    book.status === "open" ? (
                       <TableRow
                         key={book.title}
                         sx={{
