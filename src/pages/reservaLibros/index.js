@@ -52,7 +52,7 @@ export default function ReservasLibros() {
               color="#2196f3"
               gutterBottom
             >
-              Libros
+              Libros disponibles
             </Typography>
             {/* tabla */}
             <TableContainer component={Paper}>

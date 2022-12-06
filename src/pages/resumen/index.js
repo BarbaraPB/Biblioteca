@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,18 +14,7 @@ import Button from "@mui/material/Button";
 import { grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useUsuario } from "../../api/useUsuario";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { useBook } from "../../api/useBook";
 
 const formatter = new Intl.NumberFormat("es-CL", {
   currency: "CLP",
@@ -37,14 +26,21 @@ const fecha = new Date();
 export default function Resumen() {
   const navigate = useNavigate();
   const { usuario, refreshUsuario } = useUsuario();
+  const { recordBooks } = useBook();
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     console.log(usuario.authToken);
     refreshUsuario();
+    fetchBooks();
   }, []);
 
+  async function fetchBooks() {
+    setBooks(await recordBooks());
+  }
+
   return (
-    <Box sx={{ backgroundColor: grey[200], padding: 4 }}>
+    <Box sx={{ backgroundColor: grey[200], padding: 4, height: "100%" }}>
       {/* seccion salas y saldos */}
       <Grid container direction="row" spacing={4}>
         {/* tarjeta de salas de estudio recientes */}
@@ -57,7 +53,7 @@ export default function Resumen() {
               color="#2196f3"
               gutterBottom
             >
-              Salas de estudio recientes
+              Libros recientes
             </Typography>
             {/* tabla */}
             <TableContainer component={Paper}>
@@ -69,31 +65,31 @@ export default function Resumen() {
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography fontWeight="bold">Dia</Typography>
+                      <Typography fontWeight="bold">Titulo</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography fontWeight="bold">Bloque</Typography>
+                      <Typography fontWeight="bold">Autor</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography fontWeight="bold">Sala</Typography>
+                      <Typography fontWeight="bold">Año</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography fontWeight="bold">Estado</Typography>
+                      <Typography fontWeight="bold">ISBN</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {books.map((book) => (
                     <TableRow
-                      key={row.name}
+                      key={book.title}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.name}
+                        {book.bookId.title}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
+                      <TableCell align="right">{book.bookId.author}</TableCell>
+                      <TableCell align="right">{book.bookId.year}</TableCell>
+                      <TableCell align="right">{book.bookId.isbn}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -101,7 +97,11 @@ export default function Resumen() {
             </TableContainer>
             {/* boton ver mas */}
             <Button variant="text" sx={{ marginTop: 2 }}>
-              <Typography fontSize="12px" color="#2196f3">
+              <Typography
+                onClick={() => navigate("/historial")}
+                fontSize="12px"
+                color="#2196f3"
+              >
                 Ver más
               </Typography>
             </Button>
@@ -153,70 +153,6 @@ export default function Resumen() {
                 color="#2196f3"
               >
                 Ver detalles
-              </Typography>
-            </Button>
-          </Card>
-        </Grid>
-        {/* tarjeta de libros recientes */}
-        <Grid item xs={12}>
-          <Card sx={{ padding: 2 }}>
-            {/* titulo */}
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              color="#2196f3"
-              gutterBottom
-            >
-              Libros recientes
-            </Typography>
-            {/* tabla */}
-            <TableContainer component={Paper}>
-              <Table
-                sx={{ minWidth: 650 }}
-                size="small"
-                aria-label="a dense table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography fontWeight="bold">Recepción</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography fontWeight="bold">Entrega</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography fontWeight="bold">Título</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography fontWeight="bold">Estado</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography fontWeight="bold">Saldo pendiente</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            {/* boton ver mas */}
-            <Button variant="text" sx={{ marginTop: 2 }}>
-              <Typography fontSize="12px" color="#2196f3">
-                Ver más
               </Typography>
             </Button>
           </Card>

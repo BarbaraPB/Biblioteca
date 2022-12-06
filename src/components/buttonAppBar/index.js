@@ -18,13 +18,13 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import Person2Icon from "@mui/icons-material/Person2";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ChairIcon from "@mui/icons-material/Chair";
+// import ChairIcon from "@mui/icons-material/Chair";
 import { Logout, Money } from "@mui/icons-material";
 import { useUsuario } from "../../api/useUsuario";
 
 const routes = {
   "/reservas-libros": "Reservas de libros",
-  "/lista-salas": "Reservas de salas",
+  // "/lista-salas": "Reservas de salas",
   "/saldos-pendientes": "Saldos pendientes",
   "/resumen": "Resumen",
   "/historial": "Historial",
@@ -60,7 +60,7 @@ export default function ButtonAppBar() {
     { option: "Mi perfil", icon: <Person2Icon />, path: "/perfil" },
     { option: "Reservas", icon: <BookmarkIcon />, path: "/historial" },
     { option: "Estanterias", icon: <MenuBookIcon />, path: "/reservas-libros" },
-    { option: "Salas", icon: <ChairIcon />, path: "/lista-salas" },
+    // { option: "Salas", icon: <ChairIcon />, path: "/lista-salas" },
     {
       option: "Saldos pendientes",
       icon: <Money />,

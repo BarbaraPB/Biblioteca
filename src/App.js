@@ -5,13 +5,12 @@ import ButtonAppBar from "./components/buttonAppBar";
 import { AuthContext } from "./context/AuthContext";
 import Historial from "./pages/historial";
 import ListaSalas from "./pages/listaSalas/ListaSalas";
-
+import SaldosPendientes from "./pages/saldosPendientes";
 import { Login } from "./pages/login";
 import Perfil from "./pages/perfil";
 import ReservasLibros from "./pages/reservaLibros";
 import ReservasSalas from "./pages/reservaSalas";
 import Resumen from "./pages/resumen";
-import SaldosPendientes from "./pages/saldosPendientes";
 
 function App() {
   const { user } = useContext(AuthContext);
