@@ -48,8 +48,9 @@ export function useBook() {
         Authorization: `Bearer ${usuario?.authToken}`,
       },
     }).then((response) => response.json());
-    console.log(response);
+    return response.rents
   }
+  
 
   return {
     getAllBooks,
